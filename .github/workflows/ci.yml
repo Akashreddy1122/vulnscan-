@@ -25,6 +25,13 @@ jobs:
           python -m compileall -q shadowscan
           ruff check shadowscan --select S,E4,E7,E9,F
       - name: Tests
-        run: pytest -q -W error
+        run: |
+          if ! pytest -q -W error > pytest-output.txt 2>&1; then
+            tail -n 80 pytest-output.txt | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            exit 1
+          fi
+          cat pytest-output.txt
       - name: Runtime dependency advisories
         run: pip-audit -r requirements.txt --vulnerability-service pypi --progress-spinner off
