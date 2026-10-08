@@ -19,10 +19,10 @@ from shadowscan.core.models import ScanResult
 
 def _csv_cell(value: object) -> str:
     """Prevent spreadsheet formula evaluation, including whitespace-prefixed cells."""
-    text = str(value)
-    if text.lstrip().startswith(("=", "+", "-", "@")) or text.startswith(
-        ("\t", "\r", "\n")
-    ):
+    # Python 3.10's CSV writer also rejects embedded NUL; control bytes may
+    # obscure formulas in spreadsheet applications, so replace all of them.
+    text = "".join(c if ord(c) >= 32 and ord(c) != 127 else " " for c in str(value))
+    if text.lstrip().startswith(("=", "+", "-", "@")):
         return "'" + text
     return text
 

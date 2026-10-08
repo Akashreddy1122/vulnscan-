@@ -45,6 +45,7 @@ def test_report_files_private_no_symlinks_or_spreadsheet_formulas(tmp_path):
     with (tmp_path / "report.csv").open() as stream:
         row = next(csv.DictReader(stream))
         assert row["title"].startswith("'=HYPERLINK")
+        assert row["description"].startswith("' +SUM")
     ElementTree.parse(tmp_path / "report.xml")
     victim = tmp_path / "victim.txt"
     victim.write_text("unchanged")
