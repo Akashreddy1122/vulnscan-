@@ -1,0 +1,2 @@
+# Only a public, same-host control file. Never system or credential files.
+../../robots.txt

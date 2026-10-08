@@ -1,0 +1,3 @@
+# Two unrelated, harmless arithmetic expressions.
+{{713*719}}|512647
+{{727*733}}|532891

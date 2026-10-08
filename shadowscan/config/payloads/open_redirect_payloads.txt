@@ -1,0 +1,3 @@
+# Reserved .invalid host; redirects must NEVER be followed.
+https://shadowscan-test.invalid/
+//shadowscan-test.invalid/

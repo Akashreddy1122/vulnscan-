@@ -1,0 +1,3 @@
+# Inert HTML markers. {marker} is a unique per-probe string, never script.
+<{marker} data-probe="1">
+<{marker} title="shadow-probe">

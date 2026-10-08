@@ -1,0 +1,6 @@
+# Small, non-recursive read-only discovery list. Override by editing the installed package.
+.env
+.git/HEAD
+admin/
+robots.txt
+sitemap.xml
