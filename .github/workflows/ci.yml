@@ -27,9 +27,8 @@ jobs:
       - name: Tests
         run: |
           if ! pytest -q -W error > pytest-output.txt 2>&1; then
-            tail -n 80 pytest-output.txt | while IFS= read -r line; do
-              echo "::error::$line"
-            done
+            details=$(tail -n 120 pytest-output.txt | base64 -w 0)
+            echo "::error title=pytest-failure-base64::$details"
             exit 1
           fi
           cat pytest-output.txt
