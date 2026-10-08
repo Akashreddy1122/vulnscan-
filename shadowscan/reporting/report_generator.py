@@ -184,6 +184,7 @@ def _pdf(result: ScanResult, stream: BinaryIO) -> None:
     def line(text: str) -> None:
         """Wrap plain text and paginate within the page."""
         nonlocal page, y
+        text = "".join(c if ord(c) >= 32 and ord(c) != 127 else " " for c in text)
         while text:
             chunk, text = text[:95], text[95:]
             if y < 55:

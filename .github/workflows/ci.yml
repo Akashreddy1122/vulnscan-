@@ -1,7 +1,5 @@
 name: Test and audit
 on:
-  push:
-    branches: ['arena/**']
   pull_request:
     branches: [main]
 
@@ -13,8 +11,8 @@ jobs:
       matrix:
         python-version: ['3.10', '3.11', '3.12']
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -25,12 +23,6 @@ jobs:
           python -m compileall -q shadowscan
           ruff check shadowscan --select S,E4,E7,E9,F
       - name: Tests
-        run: |
-          if ! pytest -q -W error > pytest-output.txt 2>&1; then
-            details=$(tail -n 120 pytest-output.txt | base64 -w 0)
-            echo "::error title=pytest-failure-base64::$details"
-            exit 1
-          fi
-          cat pytest-output.txt
+        run: pytest -q -W error
       - name: Runtime dependency advisories
         run: pip-audit -r requirements.txt --vulnerability-service pypi --progress-spinner off
