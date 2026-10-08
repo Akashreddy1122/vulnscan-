@@ -1,0 +1,11 @@
+# Bounded DNS-only guesses; scanning discovered hosts requires separate authorization.
+www
+api
+mail
+admin
+dev
+staging
+blog
+app
+vpn
+test

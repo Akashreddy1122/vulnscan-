@@ -1,0 +1,28 @@
+# Conservative defaults. Explicit --authorized is required before network access.
+mode: active
+profile: quick
+concurrency: 20
+threads: 50
+timeout: 5.0
+retries: 1
+rate: 2.0
+jitter: 0.0
+max_targets: 256
+max_response_bytes: 262144
+max_pages: 20
+max_depth: 2
+user_agent: ShadowScan/0.2 (authorized security assessment)
+# Optional list of explicit user agents to rotate; empty uses the identified default.
+user_agents: []
+ports: [21, 22, 25, 53, 80, 110, 143, 443, 445, 587, 3389, 8080, 8443]
+udp_ports: []
+enumerate_subdomains: false
+headers: {}
+# Auth over plaintext HTTP is refused unless explicitly opted in.
+allow_insecure_auth: false
+modules_disabled: []
+service_ports:
+  ssh: 22
+  ftp: 21
+  smtp: 25
+  rdp: 3389

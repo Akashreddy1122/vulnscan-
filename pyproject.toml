@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shadowscan"
+version = "0.2.0"
+description = "Scope-controlled, low-impact security assessment framework"
+readme = "README.md"
+keywords = ["security", "scanner", "authorized-assessment"]
+requires-python = ">=3.10"
+dependencies = ["aiohttp==3.14.4", "PyYAML==6.0.2", "defusedxml==0.7.1", "rich==14.1.0"]
+
+[project.optional-dependencies]
+pdf = ["reportlab==4.4.3"]
+socks = ["aiohttp-socks==0.12.0"]
+test = ["pytest==8.4.1", "pytest-asyncio==1.1.0"]
+audit = ["ruff==0.13.0", "pip-audit==2.9.0"]
+
+[project.scripts]
+shadowscan = "shadowscan.main:main"
+
+[tool.setuptools.packages.find]
+include = ["shadowscan*"]
+
+[tool.setuptools.package-data]
+shadowscan = ["config/*.yaml", "config/payloads/*.txt"]

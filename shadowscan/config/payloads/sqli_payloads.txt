@@ -1,0 +1,4 @@
+# Non-extracting error differential delimiters.
+'
+"
+')

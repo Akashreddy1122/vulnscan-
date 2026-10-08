@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+build/
+dist/
+*.db
+*.sqlite*
+reports/
+.env
+
+shadowscan.log*
+# Local scan outputs can contain sensitive target data.
+report_*.html
+report_*.json
+report_*.xml
+report_*.csv
+report_*.pdf
+scheduled_*.html
+scheduled_*.json
+scheduled_*.xml
+scheduled_*.csv
+scheduled_*.pdf
+*.delta.json
