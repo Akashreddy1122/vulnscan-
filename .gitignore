@@ -7,7 +7,7 @@ build/
 dist/
 *.db
 *.sqlite*
-reports/
+/reports/
 .env
 
 shadowscan.log*
@@ -23,3 +23,12 @@ scheduled_*.xml
 scheduled_*.csv
 scheduled_*.pdf
 *.delta.json
+
+# --- Malware Scan platform -------------------------------------------------
+backend/data/
+backend/.pytest_cache/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
