@@ -1,3 +1,58 @@
+# Malware Scan
+
+**Malware Scan** is a self-hosted security operations platform inspired by Wazuh, with a dark 3D-accented dashboard. It combines file and ransomware scanning, endpoint and process monitoring, log analysis, file integrity monitoring, vulnerability and configuration assessment, network detection, threat hunting, ATT&CK mapping, explainable alerts, incident correlation, audited automated response and an investigation assistant.
+
+> **Read before deploying:** detection is probabilistic. Malware Scan reduces risk and workload; it does not guarantee detection, and a clean result does not prove a system is free of vulnerabilities or malware. Each feature's real status (implemented, partial, optional, not implemented) is in [docs/FEATURE_STATUS.md](docs/FEATURE_STATUS.md). The security model and its limits are in [docs/SECURITY.md](docs/SECURITY.md).
+
+## What you get
+
+- **Scanner:** upload or path scanning with live progress; signatures, IOC hashes, a YARA-subset engine, static analysis (PE/ELF/entropy/strings) and an explainable ML score. Every verdict lists its weighted factors.
+- **Quarantine:** encrypted at rest, hash-verified restore, refuses to overwrite.
+- **Response:** playbooks with precheck, verify and rollback; dry-run by default; dangerous actions need confirmation and policy.
+- **Monitoring:** process (EDR rules), network (connection rules and IOCs), logs (rules with escalation), file integrity (SHA-256 baselines).
+- **Posture:** inventory-based CVE correlation (curated KB), 25 configuration checks, compliance percentages.
+- **Investigation:** alert triage, incidents with timelines, threat hunting, ATT&CK matrix, reports (HTML/JSON/CSV), and an assistant that answers from the database and cites its sources.
+- **Operations:** RBAC (admin/analyst/responder/viewer), audit trail, rate limiting, health endpoints, supervised workers, rule manifest with integrity checks, SQL migrations, Docker Compose, a guided installer, and a reference endpoint agent.
+
+## Quick start
+
+```bash
+./scripts/install.sh --dry-run      # preview
+./scripts/install.sh                # local install (needs Python 3.11+, Node 20+)
+# or
+./scripts/install.sh --docker       # containers (Docker Compose v2)
+```
+
+Then open the web app (http://localhost:3000 locally) and sign in as `admin`. The first-run checklist is in [docs/OPERATIONS.md](docs/OPERATIONS.md). API docs: `/api/docs` (Swagger) and `/api/openapi.json`.
+
+## Repository layout
+
+| Path | What it is |
+|---|---|
+| `backend/` | FastAPI API, detection engine, monitoring, response, migrations, tests, E2E script |
+| `frontend/` | Next.js 14 dark-UI console; browser E2E in `frontend/e2e/` |
+| `agent/` | Reference endpoint agent (stdlib + psutil) |
+| `deploy/` | `docker-compose.yml`, `.env.example` |
+| `scripts/install.sh` | Guided installer |
+| `docs/` | Architecture, detection, security, integrations, operations, feature status |
+| `shadowscan/` | The earlier, separate ShadowScan CLI assessment tool (documented below) |
+
+## Verification status
+
+| Suite | Result |
+|---|---|
+| Backend unit + API tests (`backend/tests`) | 49 passing |
+| API end-to-end (`backend/scripts/e2e_test.py`, live server) | 158 checks passing |
+| Browser end-to-end (`frontend/e2e/browser_e2e.mjs`, headless Chromium) | 46 checks passing |
+| Frontend type-check and production build | passing |
+| Docker images and compose | written, **not built or run** in the development environment |
+
+---
+
+# Legacy: ShadowScan (the original tool in this repository)
+
+The sections below document the earlier **ShadowScan** CLI, which remains in `shadowscan/` and is unrelated to the Malware Scan platform's runtime.
+
 # ShadowScan
 
 **ShadowScan is a scope-controlled, modular security assessment tool for authorized testing.** It provides bounded reconnaissance, read-only configuration checks, conservative web probes, offline CVE correlation, persistent scan history, and local reports. It is not an exploit framework, and a clean report does **not** mean a target is secure.

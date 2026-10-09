@@ -32,3 +32,5 @@ frontend/.next/
 frontend/out/
 frontend/*.tsbuildinfo
 frontend/next-env.d.ts
+deploy/.env
+frontend/e2e/screens/

@@ -1,13 +1,11 @@
-# Malware Scan backend runtime dependencies (pinned)
-fastapi==0.115.6
-uvicorn==0.34.0
-python-multipart==0.0.20
-PyJWT==2.10.1
-cryptography==44.0.0
-psutil==6.1.1
-PyYAML==6.0.2
-packaging==24.2
-
-# Test / dev
-pytest==8.3.4
-httpx==0.28.1
+# Malware Scan backend — runtime dependencies, pinned to the versions the test suite
+# and E2E suites were run against (Python 3.11).
+fastapi==0.143.0
+starlette==1.7.0
+uvicorn==0.54.0
+pydantic==2.14.0
+python-multipart==0.0.32
+PyJWT==2.15.1
+cryptography==50.0.2
+psutil==7.2.2
+PyYAML==6.0.3

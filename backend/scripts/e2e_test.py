@@ -335,7 +335,7 @@ def main() -> int:
     md5 = hashlib.md5(b"unique-e2e-ioc-content-12345").hexdigest()
     r = c.post("/api/intelligence/iocs", headers=ah, json={
         "type": "hash", "value": md5, "source": "e2e", "confidence": 95, "tags": "e2e"})
-    check("custom hash IOC added", r.status_code == 200, r.text[:150])
+    check("custom hash IOC added (or already present from a prior run)", r.status_code in (200, 409), r.text[:150])
     r = c.post(f"/api/scans/{ioc_scan['scan_id']}/rescan", headers=ah)
     d_ioc = wait_scan(r.json()["scan_id"])
     check("custom IOC matched on rescan", any(x.get("engine") == "db-ioc" for x in d_ioc.get("detections", [])),
@@ -540,6 +540,22 @@ def main() -> int:
     agents = r.json()["agents"]
     check("agents list with risk + metrics", len(agents) >= 2 and any(a.get("risk") for a in agents),
           json.dumps(agents)[:300])
+
+    section("Regression: every list endpoint with every filter")
+    filter_matrix = [
+        "/api/alerts?status=new&severity=high&category=malware&search=x",
+        "/api/alerts?status=false_positive", "/api/incidents?status=open",
+        "/api/quarantine?status=quarantined", "/api/quarantine?status=", "/api/scans?verdict=malicious",
+        "/api/logs?severity=high&source=tail&q=x", "/api/fim/events?change_type=modified&severity=high&path_contains=x",
+        "/api/fim/inventory?q=etc", "/api/vulnerabilities?status=open&severity=critical&q=x",
+        "/api/vulnerabilities?status=all", "/api/sca?status=fail", "/api/sca?latest_only=false&status=pass",
+        "/api/network/events?verdict=benign&direction=outbound&q=x", "/api/intelligence/iocs?type=hash&q=x",
+        "/api/response/actions?limit=5", "/api/agents", "/api/reports", "/api/admin/audit?result=success&q=x&username=admin",
+        "/api/hunt/saved-searches", "/api/dashboard/timeline?hours=48", "/api/compliance", "/api/mitre",
+    ]
+    for path in filter_matrix:
+        r = c.get(path, headers=ah)
+        check(f"GET {path}", r.status_code == 200, f"-> {r.status_code} {r.text[:160]}")
 
     print(f"\n{'='*60}\nE2E RESULT: {passed} passed, {len(failed)} failed")
     if failed:
